@@ -9,3 +9,17 @@ jobs:
     steps:
       - name: Print Hello World
         run: echo "Hello world"
+
+
+#Explanation
+#name: Workflow name.
+
+#on: Runs when code is pushed to main or manually triggered.
+
+#jobs: Defines the job.
+
+#runs-on: Uses an Ubuntu runner.
+
+#steps: Executes commands.
+
+#run: Prints Hello world.
