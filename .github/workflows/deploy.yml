@@ -45,7 +45,7 @@ jobs:
           -e "ssh -i ~/.ssh/ec2_key" \
           --exclude='.git/' \
           --exclude='.github/' \
-          ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/var/www/html/
+          ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/usr/share/nginx/html/
 
       # Step 5: Verify deployment
       - name: Verify Deployment
