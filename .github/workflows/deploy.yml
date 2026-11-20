@@ -1,3 +1,4 @@
+
 name: Deploy HTML Website to EC2
 
 on:
@@ -5,56 +6,18 @@ on:
     branches:
       - main
 
-  workflow_dispatch:
-
 jobs:
-
   deploy:
-
-    # runs-on: ubuntu-latest
     runs-on: [self-hosted, linux, x64]
 
     steps:
-
-      # Step 1: Checkout GitHub repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Step 2: Configure SSH
-      - name: Configure SSH
-        env:
-          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-
-          printf '%s\n' "$EC2_SSH_KEY" > ~/.ssh/ec2_key
-
-          chmod 600 ~/.ssh/ec2_key
-
-          ssh-keyscan -H "${{ secrets.EC2_HOST }}" >> ~/.ssh/known_hosts
-
-      # Step 3: Install rsync
-      - name: Install rsync
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y rsync
-
-      # Step 4: Deploy website to EC2
       - name: Deploy Website
         run: |
-          rsync -avz --delete \
-          -e "ssh -i ~/.ssh/ec2_key" \
-          --exclude='.git/' \
-          --exclude='.github/' \
-          ./ ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/usr/share/nginx/html/
+          sudo cp -r ./* /var/www/html/
+          sudo systemctl reload apache2
 
-      # Step 5: Verify deployment
-      - name: Verify Deployment
-        run: |
-          ssh -i ~/.ssh/ec2_key \
-          ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }} \
-          "sudo systemctl is-active nginx"
-
-      # Step 6: Deployment success
-      - name: Deployment Successful
+      - name: Deployment Success
         run: echo "Website deployed successfully!"
