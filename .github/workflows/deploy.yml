@@ -17,7 +17,7 @@ jobs:
       - name: Deploy Website
         run: |
           sudo cp -r ./* /var/www/html/
-          sudo systemctl reload apache2
+          sudo systemctl reload httpd
 
       - name: Deployment Success
         run: echo "Website deployed successfully!"
